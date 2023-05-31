@@ -4,7 +4,8 @@ import { AuthorModule } from './author/author.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import config from './config/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BookEntity } from './author/entities/book.entity';
+import { BookEntity } from './book/entities/book.entity';
+import { AuthorEntity } from './author/entities/author.entity';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { BookEntity } from './author/entities/book.entity';
         password: configService.get('database.password'),
         database: configService.get('database.database'),
         // autoLoadEntities: true,
-        entities: [BookEntity],
+        entities: [BookEntity, AuthorEntity],
         synchronize: true,
       }),
     }),
