@@ -12,6 +12,8 @@ export class AuthorEntity {
   @Column()
   name: string;
 
-  @OneToMany(() => BookEntity, (book) => book.author)
+  @OneToMany(() => BookEntity, (book) => book.author, {
+    onDelete: 'SET NULL',
+  })
   books: BookEntity[];
 }

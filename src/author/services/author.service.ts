@@ -3,6 +3,7 @@ import { CreateAuthorDto } from '../dto/create.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthorEntity } from '../entities/author.entity';
 import { Repository } from 'typeorm';
+import { UpdateAuthorDto } from '../dto/update.dto';
 
 @Injectable()
 export class AuthorService {
@@ -31,5 +32,18 @@ export class AuthorService {
         id: authorId,
       },
     });
+  }
+
+  async updateOne(updateAuthorDto: UpdateAuthorDto) {
+    return await this.authorRepository.update(
+      {
+        id: updateAuthorDto.id,
+      },
+      updateAuthorDto,
+    );
+  }
+
+  async deleteOne(id: number) {
+    return await this.authorRepository.delete(id);
   }
 }
