@@ -15,6 +15,11 @@ export class BookEntity {
   @Column()
   description: string;
 
-  @ManyToOne(() => AuthorEntity, (author) => author.books)
+  @Column({ default: null })
+  avatar: string;
+
+  @ManyToOne(() => AuthorEntity, (author) => author.books, {
+    onDelete: 'CASCADE',
+  })
   author: AuthorEntity;
 }

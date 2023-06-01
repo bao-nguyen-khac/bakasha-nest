@@ -9,4 +9,6 @@ export class CreateBookDto {
   @IsNotEmpty()
   @IsNumberString()
   authorId: number;
+
+  avatar: string;
 }

@@ -16,10 +16,14 @@ export class BookService {
 
   async create(createBookDto: CreateBookDto) {
     const author = await this.authorService.findById(createBookDto.authorId);
+    if (!author) {
+      return author;
+    }
     const bookEntity = new BookEntity();
     bookEntity.author = author;
     bookEntity.description = createBookDto.description;
     bookEntity.name = createBookDto.name;
+    bookEntity.avatar = createBookDto.avatar;
     const book = await this.bookRepository.save(bookEntity);
     return book;
   }
