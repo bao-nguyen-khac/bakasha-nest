@@ -4,16 +4,13 @@ import {
   Process,
   Processor,
 } from '@nestjs/bull';
-import { Logger } from '@nestjs/common';
 import { Job } from 'bull';
 import { setTimeout } from 'timers/promises';
 
-@Processor('sendMail')
-export class sendMailProcessor {
-  private readonly logger = new Logger(sendMailProcessor.name);
-
-  @Process('verify')
-  async handleVerifyEmail(job: Job) {
+@Processor('verify-phone')
+export class VerifyPhoneProcessor {
+  @Process('send-otp')
+  async sendOTP(job: Job) {
     job.log('STARTED');
 
     for (let i = 0; i < 100; i++) {
@@ -36,6 +33,6 @@ export class sendMailProcessor {
   @OnQueueCompleted()
   onCompleted(job: Job, result: any) {
     job.progress(100);
-    console.log(result);
+    return result;
   }
 }

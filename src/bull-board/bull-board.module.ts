@@ -3,7 +3,7 @@ import { Queue } from 'bull';
 import { getQueuesRegistrations, getQueuesTokens } from './bull-board.helper';
 import { BullBoardMiddleware } from './bull-board.middleware';
 
-const queuesNames = ['sendMail'];
+const queuesNames = ['send-mail', 'verify-phone'];
 const queuesRegistrations = getQueuesRegistrations(queuesNames);
 @Module({
   imports: queuesRegistrations,

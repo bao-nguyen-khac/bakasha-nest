@@ -8,9 +8,9 @@ import { BookEntity } from './book/entities/book.entity';
 import { AuthorEntity } from './author/entities/author.entity';
 import { BullModule } from '@nestjs/bull';
 import { BullBoardModule } from './bull-board/bull-board.module';
-import { sendMailModule } from './job/sendMail/sendMail.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { JobModule } from './job/job.module';
 
 @Module({
   imports: [
@@ -43,9 +43,9 @@ import { UserModule } from './user/user.module';
     BookModule,
     AuthorModule,
     BullBoardModule,
-    sendMailModule,
-    AuthModule,
     UserModule,
+    JobModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
