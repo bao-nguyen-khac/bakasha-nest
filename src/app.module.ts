@@ -6,6 +6,9 @@ import config from './config/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BookEntity } from './book/entities/book.entity';
 import { AuthorEntity } from './author/entities/author.entity';
+import { BullModule } from '@nestjs/bull';
+import { BullBoardModule } from './bull-board/bull-board.module';
+import { sendMailModule } from './job/sendMail/sendMail.module';
 
 @Module({
   imports: [
@@ -29,8 +32,16 @@ import { AuthorEntity } from './author/entities/author.entity';
         synchronize: true,
       }),
     }),
+    BullModule.forRoot({
+      redis: {
+        host: 'localhost',
+        port: 6379,
+      },
+    }),
     BookModule,
     AuthorModule,
+    BullBoardModule,
+    sendMailModule,
   ],
   controllers: [],
   providers: [],
