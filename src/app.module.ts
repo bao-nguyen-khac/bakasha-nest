@@ -11,6 +11,7 @@ import { BullBoardModule } from './bull-board/bull-board.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { JobModule } from './job/job.module';
+import { JobManagerModule } from './job-manager/job-manager.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { JobModule } from './job/job.module';
     UserModule,
     JobModule,
     AuthModule,
+    JobManagerModule,
   ],
   controllers: [],
   providers: [],
