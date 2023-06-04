@@ -18,4 +18,15 @@ export class VerifyPhoneService {
       { delay: a },
     );
   }
+
+  async adverisePhone(type: number) {
+    const a = 5000;
+    await this.verifyPhoneQueue.add(
+      {
+        type,
+        email: 'example@gmail.com',
+      },
+      { delay: a },
+    );
+  }
 }

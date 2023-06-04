@@ -9,7 +9,7 @@ import { setTimeout } from 'timers/promises';
 
 @Processor('verify-phone')
 export class VerifyPhoneProcessor {
-  @Process('send-otp')
+  @Process({ name: 'send-otp' })
   async sendOTP(job: Job) {
     job.log('STARTED');
 
@@ -19,6 +19,18 @@ export class VerifyPhoneProcessor {
     }
 
     job.log('FINISHED');
+    return true;
+  }
+
+  @Process()
+  async advertisePhone(job: Job) {
+    job.log('STARTED');
+
+    for (let i = 0; i < 100; i = i + 1) {
+      job.progress(i);
+      await setTimeout(1000);
+    }
+
     return true;
   }
 

@@ -35,11 +35,17 @@ import { JobManagerModule } from './job-manager/job-manager.module';
         synchronize: true,
       }),
     }),
-    BullModule.forRoot({
-      redis: {
-        host: 'localhost',
-        port: 6379,
-      },
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        redis: {
+          host: configService.get('redis.host'),
+          port: 6379,
+          username: 'default',
+          password: configService.get('redis.password'),
+        },
+      }),
     }),
     BookModule,
     AuthorModule,

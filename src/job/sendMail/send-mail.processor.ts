@@ -9,8 +9,21 @@ import { setTimeout } from 'timers/promises';
 
 @Processor('send-mail')
 export class SendMailProcessor {
-  @Process('verify')
+  @Process({ name: 'verify' })
   async handleVerifyEmail(job: Job) {
+    job.log('STARTED');
+
+    for (let i = 0; i < 100; i++) {
+      job.progress(i);
+      await setTimeout(1000);
+    }
+
+    job.log('FINISHED');
+    return true;
+  }
+
+  @Process({ name: 'advertise' })
+  async handleAdsEmail(job: Job) {
     job.log('STARTED');
 
     for (let i = 0; i < 100; i++) {

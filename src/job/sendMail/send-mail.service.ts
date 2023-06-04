@@ -1,6 +1,7 @@
 import { InjectQueue } from '@nestjs/bull';
 import { Injectable } from '@nestjs/common';
 import { Queue } from 'bull';
+import { CreateMailDto } from 'src/job-manager/dto/create-mail.dto';
 
 @Injectable()
 export class SendMailService {
@@ -8,14 +9,27 @@ export class SendMailService {
     @InjectQueue('send-mail') private readonly sendMailQueue: Queue,
   ) {}
 
-  async verifyEmail(time: number) {
-    const a = time;
+  async verifyEmail(createMailDto: CreateMailDto) {
+    const delay = parseInt(createMailDto.delay);
     await this.sendMailQueue.add(
       'verify',
       {
-        email: 'example@gmail.com',
+        email: createMailDto.email,
       },
-      { delay: a },
+      { delay },
     );
+    return true;
+  }
+
+  async advertiseEmail(createMailDto: CreateMailDto) {
+    const delay = parseInt(createMailDto.delay);
+    await this.sendMailQueue.add(
+      'advertise',
+      {
+        email: createMailDto.email,
+      },
+      { delay },
+    );
+    return true;
   }
 }

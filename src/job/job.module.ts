@@ -8,12 +8,7 @@ import { SendMailService } from './sendMail/send-mail.service';
 
 @Module({
   imports: [
-    BullModule.registerQueue({
-      name: 'send-mail',
-    }),
-    BullModule.registerQueue({
-      name: 'verify-phone',
-    }),
+    BullModule.registerQueue({ name: 'send-mail' }, { name: 'verify-phone' }),
     BullBoardModule,
   ],
   providers: [

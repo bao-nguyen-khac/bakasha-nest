@@ -1,11 +1,16 @@
 import { InjectQueue } from '@nestjs/bull';
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Queue } from 'bull';
+import { SendMailService } from 'src/job/sendMail/send-mail.service';
+import { VerifyPhoneService } from 'src/job/verify-phone/verify-phone.service';
+import { CreateMailDto } from './dto/create-mail.dto';
 
 @Controller('job-manager')
 export class JobManagerController {
   constructor(
-    @InjectQueue('verify-phone') private readonly sendMailQueue: Queue,
+    @InjectQueue('send-mail') private readonly sendMailQueue: Queue,
+    private verifyPhoneService: VerifyPhoneService,
+    private sendMailService: SendMailService,
   ) {}
 
   @Get('get-all')
@@ -18,7 +23,16 @@ export class JobManagerController {
       'paused',
       'waiting',
     ]);
-    console.log('🚀 ~ file: job-manager.controller.ts:14 ~ jobs:', jobs);
     return jobs;
+  }
+
+  @Post('mail')
+  async runSendMail(@Body() createMailDto: CreateMailDto) {
+    if (createMailDto.type === 'verify')
+      await this.sendMailService.verifyEmail(createMailDto);
+    else await this.sendMailService.advertiseEmail(createMailDto);
+    return {
+      successful: true,
+    };
   }
 }
