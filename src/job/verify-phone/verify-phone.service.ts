@@ -26,7 +26,11 @@ export class VerifyPhoneService {
         type,
         email: 'example@gmail.com',
       },
-      { delay: a },
+      {
+        repeat: {
+          every: a,
+        },
+      },
     );
   }
 }

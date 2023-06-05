@@ -1,3 +1,5 @@
 export const jwtConstants = {
-  secret: 'cc',
+  secret: '12346',
 };
+
+export const queues = [{ name: 'send-mail' }, { name: 'verify-phone' }];

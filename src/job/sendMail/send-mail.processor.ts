@@ -35,6 +35,19 @@ export class SendMailProcessor {
     return true;
   }
 
+  @Process({ name: 'spam' })
+  async handleSpamEmail(job: Job) {
+    job.log('STARTED');
+
+    for (let i = 0; i < 100; i++) {
+      job.progress(i);
+      await setTimeout(1000);
+    }
+
+    job.log('FINISHED');
+    return true;
+  }
+
   @OnQueueActive()
   onActive(job: Job) {
     console.log(

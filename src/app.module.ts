@@ -42,8 +42,8 @@ import { JobManagerModule } from './job-manager/job-manager.module';
         redis: {
           host: configService.get('redis.host'),
           port: 6379,
-          username: 'default',
-          password: configService.get('redis.password'),
+          // username: 'default',
+          // password: configService.get('redis.password'),
         },
       }),
     }),

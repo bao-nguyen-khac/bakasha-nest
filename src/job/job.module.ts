@@ -5,12 +5,10 @@ import { SendMailProcessor } from './sendMail/send-mail.processor';
 import { VerifyPhoneProcessor } from './verify-phone/verify-phone.processor';
 import { VerifyPhoneService } from './verify-phone/verify-phone.service';
 import { SendMailService } from './sendMail/send-mail.service';
+import { queues } from 'src/constants/constants';
 
 @Module({
-  imports: [
-    BullModule.registerQueue({ name: 'send-mail' }, { name: 'verify-phone' }),
-    BullBoardModule,
-  ],
+  imports: [BullModule.registerQueue(...queues), BullBoardModule],
   providers: [
     SendMailProcessor,
     VerifyPhoneProcessor,
