@@ -11,5 +11,6 @@ export default () => ({
   redis: {
     host: process.env.REDIS_HOST,
     password: process.env.REDIS_PASSWORD,
+    url: `redis://default:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:6379/`,
   },
 });

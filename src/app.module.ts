@@ -12,6 +12,10 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { JobModule } from './job/job.module';
 import { JobManagerModule } from './job-manager/job-manager.module';
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+import { RedisClientOptions } from 'redis';
+import { redisStore } from 'cache-manager-redis-yet';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -42,9 +46,20 @@ import { JobManagerModule } from './job-manager/job-manager.module';
         redis: {
           host: configService.get('redis.host'),
           port: 6379,
-          // username: 'default',
-          // password: configService.get('redis.password'),
+          username: 'default',
+          password: configService.get('redis.password'),
         },
+      }),
+    }),
+    CacheModule.registerAsync<RedisClientOptions>({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        store: await redisStore({
+          url: configService.get<string>('redis.url'),
+          ttl: 10000,
+        }),
+        isGlobal: true,
       }),
     }),
     BookModule,
@@ -56,6 +71,11 @@ import { JobManagerModule } from './job-manager/job-manager.module';
     JobManagerModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
+  ],
 })
 export class AppModule {}
