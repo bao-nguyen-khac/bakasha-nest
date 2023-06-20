@@ -16,6 +16,14 @@ import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { RedisClientOptions } from 'redis';
 import { redisStore } from 'cache-manager-redis-yet';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { MovieModule } from './movie/movie.module';
+import { GenreModule } from './genre/genre.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
+import { GenreEntity } from './genre/entities/genre.entity';
+import { MovieEntity } from './movie/entities/movie.entity';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
 @Module({
   imports: [
@@ -35,7 +43,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
         password: configService.get('database.password'),
         database: configService.get('database.database'),
         // autoLoadEntities: true,
-        entities: [BookEntity, AuthorEntity],
+        entities: [BookEntity, AuthorEntity, GenreEntity, MovieEntity],
         synchronize: true,
       }),
     }),
@@ -51,16 +59,22 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
         },
       }),
     }),
-    CacheModule.registerAsync<RedisClientOptions>({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        store: await redisStore({
-          url: configService.get<string>('redis.url'),
-          ttl: 10000,
-        }),
-        isGlobal: true,
-      }),
+    // CacheModule.registerAsync<RedisClientOptions>({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: async (configService: ConfigService) => ({
+    //     store: await redisStore({
+    //       url: configService.get<string>('redis.url'),
+    //       ttl: 10000,
+    //     }),
+    //     isGlobal: true,
+    //   }),
+    // }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      playground: false,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
     BookModule,
     AuthorModule,
@@ -69,13 +83,15 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     JobModule,
     AuthModule,
     JobManagerModule,
+    MovieModule,
+    GenreModule,
   ],
   controllers: [],
   providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor,
-    },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: CacheInterceptor,
+    // },
   ],
 })
 export class AppModule {}

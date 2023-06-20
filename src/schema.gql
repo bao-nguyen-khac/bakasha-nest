@@ -1,0 +1,52 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type GenreEntity {
+  id: Int!
+  name: String!
+  movies: [MovieEntity!]
+}
+
+type MovieEntity {
+  id: Int!
+  name: String!
+  genreId: Int!
+  genre: GenreEntity!
+}
+
+type Query {
+  movies: [MovieEntity!]!
+  movie(id: Int!): MovieEntity!
+  genres: [GenreEntity!]!
+  genre(id: Int!): GenreEntity!
+}
+
+type Mutation {
+  createMovie(createMovieInput: CreateMovieInput!): MovieEntity!
+  updateMovie(updateMovieInput: UpdateMovieInput!): MovieEntity!
+  removeMovie(id: Int!): MovieEntity!
+  createGenre(createGenreInput: CreateGenreInput!): GenreEntity!
+  updateGenre(updateGenreInput: UpdateGenreInput!): GenreEntity!
+  removeGenre(id: Int!): GenreEntity!
+}
+
+input CreateMovieInput {
+  name: String!
+  genreId: Int!
+}
+
+input UpdateMovieInput {
+  name: String!
+  genreId: Int!
+  id: Int!
+}
+
+input CreateGenreInput {
+  name: String!
+}
+
+input UpdateGenreInput {
+  name: String!
+  id: Int!
+}
